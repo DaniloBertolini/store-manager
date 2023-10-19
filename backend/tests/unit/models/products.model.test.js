@@ -13,34 +13,51 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 describe('Products Model', function () {
-  it('Será validado que é possível listar todos os produtos', async function () {
-    sinon.stub(connection, 'execute')
-      .resolves([allProducts]);
+  describe('GET', function () {
+    it('Será validado que é possível listar todos os produtos', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([allProducts]);
+      
+      const response = await productsModel.getAllModel();
+      
+      expect(response).deep.equal(allProducts);
+    });
 
-    const response = await productsModel.getAllModel();
+    it('Será validado que é possível listar um produto específico com sucesso', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([product]);
+      
+      const response = await productsModel.findByIdModel(1);
 
-    expect(response).deep.equal(allProducts);
+      expect(response).deep.equal(product);
+    });
+
+    it('Será validado que não é possível listar um produto que não existe', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([]);
+
+      const response = await productsModel.findByIdModel(99);
+
+      expect(response).deep.equal(undefined);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
   });
 
-  it('Será validado que é possível listar um produto específico com sucesso', async function () {
-    sinon.stub(connection, 'execute')
-      .resolves([product]);
+  describe('POST', function () {
+    it('Será validado que é possível cadastrar um produto com sucesso', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([{ insertId: 4 }]);
+      
+      const response = await productsModel.createModel('Produto Teste');
 
-    const response = await productsModel.findByIdModel(1);
+      expect(response).deep.equal(4);
+    });
 
-    expect(response).deep.equal(product);
-  });
-
-  it('Será validado que não é possível listar um produto que não existe', async function () {
-    sinon.stub(connection, 'execute')
-      .resolves([]);
-
-    const response = await productsModel.findByIdModel(99);
-
-    expect(response).deep.equal(undefined);
-  });
-
-  afterEach(function () {
-    sinon.restore();
+    afterEach(function () {
+      sinon.restore();
+    });
   });
 });

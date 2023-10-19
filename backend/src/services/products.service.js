@@ -7,7 +7,7 @@ const getAll = async () => {
 
 const findById = async (id) => {
   const [data] = await productsModel.findByIdModel(id);
-  if (data.length === 0) {
+  if (!data) {
     return {
       codeStatus: 'NOT_FOUND',
       data: { message: 'Product not found' },
@@ -19,7 +19,7 @@ const findById = async (id) => {
 const create = async (name) => {
   const productId = await productsModel.createModel(name);
 
-  const data = await productsModel.findByIdModel(productId);
+  const [data] = await productsModel.findByIdModel(productId);
   return { codeStatus: 'CREATED', data };
 };
 
