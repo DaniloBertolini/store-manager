@@ -32,6 +32,16 @@ const productDB = {
   data: product,
 };
 
+const productCreated = {
+  id: 4,
+  name: 'Teclado',
+};
+
+const productDBCreated = {
+  codeStatus: 'CREATED',
+  data: productCreated,
+};
+
 const productDBFailed = {
   codeStatus: 'NOT_FOUND',
   data: { message: 'Product not found' },
@@ -44,4 +54,6 @@ module.exports = {
   productDB,
   productFailed,
   productDBFailed,
+  productCreated,
+  productDBCreated,
 };

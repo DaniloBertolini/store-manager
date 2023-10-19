@@ -29,7 +29,7 @@ describe('Sales Service', function () {
 
   it('Será validado que é possível listar uma venda específica com sucesso', async function () {
     sinon.stub(salesModel, 'findByIdModel')
-      .resolves([salesById]);
+      .resolves(salesById);
 
     const sales = await salesService.findById(1);
 

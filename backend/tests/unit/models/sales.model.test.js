@@ -22,7 +22,7 @@ describe('Sales Model', function () {
 
   it('Será validado que é possível listar vendas pelo ID com sucesso', async function () {
     sinon.stub(connection, 'execute')
-      .resolves(salesById);
+      .resolves([salesById]);
 
     const response = await salesModel.findByIdModel(1);
 
@@ -31,7 +31,7 @@ describe('Sales Model', function () {
 
   it('Será validado que não é possível listar uma venda que não existe', async function () {
     sinon.stub(connection, 'execute')
-      .resolves([]);
+      .resolves([[]]);
 
     const response = await salesModel.findByIdModel(99);
 

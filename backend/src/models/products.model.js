@@ -1,5 +1,9 @@
 const connection = require('./connection');
-const { getAllProductsQuery, findByIdProductQuery } = require('./querys/productsQuery');
+const {
+  getAllProductsQuery,
+  findByIdProductQuery,
+  createProductQuery,
+} = require('./querys/productsQuery');
 
 const getAllModel = async () => {
   const [products] = await connection.execute(getAllProductsQuery);
@@ -11,7 +15,14 @@ const findByIdModel = async (id) => {
   return product;
 };
 
+const createModel = async (name) => {
+  const [product] = await connection.execute(createProductQuery, [name]);
+
+  return product.insertId;
+};
+
 module.exports = {
   getAllModel,
   findByIdModel,
+  createModel,
 };

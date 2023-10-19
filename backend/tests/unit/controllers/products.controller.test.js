@@ -8,6 +8,8 @@ const {
   productDB,
   productFailed,
   productDBFailed,
+  productCreated,
+  productDBCreated,
 } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
@@ -17,61 +19,86 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 describe('Products Controller', function () {
-  it('Será validado que é possível listar todos os produtos', async function () {
+  describe('GET', function () {
+    it('Será validado que é possível listar todos os produtos', async function () {
     // arr
-    const req = {};
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
-    };
-    sinon.stub(productsService, 'getAll')
-      .resolves(allProductsDB);
+      const req = {};
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'getAll')
+        .resolves(allProductsDB);
 
-    // act
-    await productsController.getAllProducts(req, res);
+      // act
+      await productsController.getAllProducts(req, res);
 
-    // ass
-    expect(res.status).calledWith(200);
-    expect(res.json).calledWith(allProducts);
+      // ass
+      expect(res.status).calledWith(200);
+      expect(res.json).calledWith(allProducts);
+    });
+
+    it('Será validado que é possível listar um produto específico com sucesso', async function () {
+      const req = {
+        params: { id: 1 },
+        body: { },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'findById')
+        .resolves(productDB);
+
+      await productsController.getProductById(req, res);
+
+      expect(res.status).calledWith(200);
+      expect(res.json).calledWith(product);
+    });
+
+    it('Será validado que não é possível listar um produto que não existe', async function () {
+      const req = {
+        params: { id: 99 },
+        body: { },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'findById')
+        .resolves(productDBFailed);
+
+      await productsController.getProductById(req, res);
+
+      expect(res.status).calledWith(404);
+      expect(res.json).calledWith(productFailed);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
   });
 
-  it('Será validado que é possível listar um produto específico com sucesso', async function () {
-    const req = {
-      params: { id: 1 },
-      body: { },
-    };
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
-    };
-    sinon.stub(productsService, 'findById')
-      .resolves(productDB);
+  describe('POST', function () {
+    it('Será validado que é possível cadastrar um produto com sucesso', async function () {
+      const req = {
+        body: { name: 'Teclado' },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'create')
+        .resolves(productDBCreated);
 
-    await productsController.getProductById(req, res);
+      await productsController.createProduct(req, res);
 
-    expect(res.status).calledWith(200);
-    expect(res.json).calledWith(product);
-  });
+      expect(res.status).calledWith(201);
+      expect(res.json).calledWith(productCreated);
+    });
 
-  it('Será validado que não é possível listar um produto que não existe', async function () {
-    const req = {
-      params: { id: 99 },
-      body: { },
-    };
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub(),
-    };
-    sinon.stub(productsService, 'findById')
-      .resolves(productDBFailed);
-
-    await productsController.getProductById(req, res);
-
-    expect(res.status).calledWith(404);
-    expect(res.json).calledWith(productFailed);
-  });
-
-  afterEach(function () {
-    sinon.restore();
+    afterEach(function () {
+      sinon.restore();
+    });
   });
 });

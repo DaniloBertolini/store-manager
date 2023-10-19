@@ -1,19 +1,21 @@
+const dateString = '2023-10-18T23:48:55.000Z';
+
 const allSales = [
   {
     saleId: 1,
-    date: '2023-10-18T23:48:55.000Z',
+    date: dateString,
     productId: 1,
     quantity: 5,
   },
   {
     saleId: 1,
-    date: '2023-10-18T23:48:55.000Z',
+    date: dateString,
     productId: 2,
     quantity: 10,
   },
   {
     saleId: 2,
-    date: '2023-10-18T23:48:55.000Z',
+    date: dateString,
     productId: 3,
     quantity: 15,
   },
@@ -22,13 +24,13 @@ const allSales = [
 const salesById = [
   {
     saleId: 1,
-    date: '2023-10-19T00:26:00.000Z',
+    date: dateString,
     productId: 1,
     quantity: 5,
   },
   {
     saleId: 1,
-    date: '2023-10-19T00:26:00.000Z',
+    date: dateString,
     productId: 2,
     quantity: 10,
   },
