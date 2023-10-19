@@ -6,7 +6,7 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  const [data] = await salesModel.findByIdModel(id);
+  const data = await salesModel.findByIdModel(id);
 
   if (!data || data.length === 0) {
     console.log('entrou');
