@@ -1,0 +1,63 @@
+const allSales = [
+  {
+    saleId: 1,
+    date: '2023-10-18T23:48:55.000Z',
+    productId: 1,
+    quantity: 5,
+  },
+  {
+    saleId: 1,
+    date: '2023-10-18T23:48:55.000Z',
+    productId: 2,
+    quantity: 10,
+  },
+  {
+    saleId: 2,
+    date: '2023-10-18T23:48:55.000Z',
+    productId: 3,
+    quantity: 15,
+  },
+];
+
+const salesById = [
+  {
+    saleId: 1,
+    date: '2023-10-19T00:26:00.000Z',
+    productId: 1,
+    quantity: 5,
+  },
+  {
+    saleId: 1,
+    date: '2023-10-19T00:26:00.000Z',
+    productId: 2,
+    quantity: 10,
+  },
+];
+
+const saleFailed = {
+  message: 'Sale not found',
+};
+
+const allSalesDB = {
+  codeStatus: 'SUCCESSFUL',
+  data: allSales,
+};
+
+const salesByIdDB = {
+  codeStatus: 'SUCCESSFUL',
+  data: salesById,
+};
+
+const saleDBFailed = {
+  codeStatus: 'NOT_FOUND',
+  data: { message: 'Sale not found' },
+};
+
+module.exports = {
+  allSales,
+  allSalesDB,
+  salesById,
+  salesByIdDB,
+  saleFailed,
+  saleDBFailed,
+};
