@@ -40,7 +40,7 @@ describe('Products Service', function () {
 
     it('Será validado que não é possível listar um produto que não existe', async function () {
       sinon.stub(productsModel, 'findByIdModel')
-        .resolves(null);
+        .resolves([]);
       
       const prod = await productsService.findById(99);
     
