@@ -11,6 +11,8 @@ const {
   saleCreate,
   saleCreated,
   saleCreatedReturn,
+  saleQuantityFailed,
+  saleQuantityFailedMessage,
 } = require('../mocks/sales.mock');
 
 const { salesService } = require('../../../src/services');
@@ -123,7 +125,6 @@ describe('Sales Controller', function () {
     it('Será validado que não é possível cadastrar um produto sem o campo "quantity"', async function () {
       const next = sinon.stub().returns();
       
-      // const res = {};
       const req = {
         body: [
           {
@@ -136,13 +137,35 @@ describe('Sales Controller', function () {
         json: sinon.stub(),
       };
 
-      // res.status = sinon.stub().returns(res);
-      // res.json = sinon.stub().returns();
-
       validateCreateSales(req, res, next);
       
       expect(next).not.to.have.been.calledWith();
       expect(res.status).calledWith(400);
+    });
+
+    it('Será validado que não é possível cadastrar um produto com o campo "quantity" igual à zero', async function () {
+      const next = sinon.stub().returns();
+      const req = {
+        body: [
+          {
+            productId: 1,
+            quantity: 0,
+          },
+        ],
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(salesService, 'create')
+        .resolves(saleQuantityFailed);
+
+      validateCreateSales(req, res, next);
+      await salesController.createSale(req, res);
+      
+      expect(next).to.have.been.calledWith();
+      expect(res.status).calledWith(422);
+      expect(res.json).calledWith(saleQuantityFailedMessage);
     });
 
     afterEach(function () {

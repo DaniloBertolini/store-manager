@@ -56,14 +56,41 @@ const saleCreate = [
   },
 ];
 
+const saleFailedProductId = [
+  {
+    productId: 99,
+    quantity: 1,
+  },
+];
+
+const saleFailedProductIdMessage = {
+  message: 'Product not found',
+};
+
+const saleFailedQuantity0 = [
+  {
+    productId: 1,
+    quantity: 0,
+  },
+];
+
 const saleCreatedReturn = {
   id: 3,
-  itensSold: saleCreate,
+  itemsSold: saleCreate,
 };
 
 const saleCreated = {
   codeStatus: 'CREATED',
   data: saleCreatedReturn,
+};
+
+const saleQuantityFailedMessage = {
+  message: '"quantity" must be greater than or equal to 1',
+};
+
+const saleQuantityFailed = {
+  codeStatus: 'INVALID_VALUE',
+  data: saleQuantityFailedMessage,
 };
 
 const salesByIdDB = {
@@ -86,4 +113,9 @@ module.exports = {
   saleCreate,
   saleCreatedReturn,
   saleCreated,
+  saleQuantityFailed,
+  saleQuantityFailedMessage,
+  saleFailedQuantity0,
+  saleFailedProductId,
+  saleFailedProductIdMessage,
 };
