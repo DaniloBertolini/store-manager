@@ -15,6 +15,7 @@ const {
 
 const { salesService } = require('../../../src/services');
 const { salesController } = require('../../../src/controllers');
+const validateCreateSales = require('../../../src/middlewares/validateCreateSales');
 
 const { expect } = chai;
 
@@ -79,11 +80,8 @@ describe('Sales Controller', function () {
   });
 
   describe('POST', function () {
-    afterEach(function () {
-      sinon.restore();
-    });
-
     it('Será validado que é possível criar uma venda com sucesso', async function () {
+      const next = sinon.stub().returns();
       const req = {
         body: saleCreate,
       };
@@ -94,10 +92,61 @@ describe('Sales Controller', function () {
       sinon.stub(salesService, 'create')
         .resolves(saleCreated);
       
+      validateCreateSales(req, res, next);
       await salesController.createSale(req, res);
 
+      expect(next).to.have.been.calledWith();
       expect(res.status).calledWith(201);
       expect(res.json).calledWith(saleCreatedReturn);
+    });
+
+    it('Será validado que não é possível cadastrar um produto sem o campo "productId"', async function () {
+      const next = sinon.stub().returns();
+
+      const req = {
+        body: [
+          {
+            productId: 10,
+          },
+        ],
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      validateCreateSales(req, res, next);
+
+      expect(next).not.to.have.been.calledWith();
+      expect(res.status).calledWith(400);
+    });
+
+    it('Será validado que não é possível cadastrar um produto sem o campo "quantity"', async function () {
+      const next = sinon.stub().returns();
+      
+      // const res = {};
+      const req = {
+        body: [
+          {
+            productId: 10,
+          },
+        ],
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+
+      // res.status = sinon.stub().returns(res);
+      // res.json = sinon.stub().returns();
+
+      validateCreateSales(req, res, next);
+      
+      expect(next).not.to.have.been.calledWith();
+      expect(res.status).calledWith(400);
+    });
+
+    afterEach(function () {
+      sinon.restore();
     });
   });
 });

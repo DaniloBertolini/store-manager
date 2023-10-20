@@ -1,5 +1,7 @@
 const { salesModel } = require('../models');
 
+const validateIdExists = require('./validations/validateIdExists');
+
 const getAll = async () => {
   const data = await salesModel.getAllModel();
   return { codeStatus: 'SUCCESSFUL', data };
@@ -15,14 +17,18 @@ const findById = async (id) => {
 };
 
 const create = async (itemsSold) => {
-  const { insertId } = await salesModel.createModel();
+  const result = await validateIdExists(itemsSold);
 
-  itemsSold.map(async (item) => {
-    const { productId, quantity } = item;
-    await salesModel.insertItemsModel(insertId, productId, quantity);
-  });
+  if (result.find((item) => item !== null)) {
+    return result.find((item) => item !== null);
+  }
 
-  return { codeStatus: 'CREATED', data: { id: insertId, itemsSold } };
+  const { insertId } = await salesModel.createModel(itemsSold);
+  const data = {
+    id: insertId,
+    itemsSold,
+  };
+  return { codeStatus: 'CREATED', data };
 };
 
 module.exports = {
