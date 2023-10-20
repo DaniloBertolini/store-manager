@@ -131,4 +131,31 @@ describe('Products Service', function () {
       expect(productFailed.data.message).equal('"name" length must be at least 5 characters long');
     });
   });
+
+  describe('DELETE', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('Será validado que é possível deletar um produto com sucesso', async function () {
+      sinon.stub(productsModel, 'findByIdModel')
+        .resolves([product]);
+      sinon.stub(productsModel, 'removeModel')
+        .resolves();
+
+      const prod = await productsService.remove(1);
+      
+      expect(prod.codeStatus).equal('NO_CONTENT');
+    });
+
+    it('Será validado que não é possível deletar um produto que não existe', async function () {
+      sinon.stub(productsModel, 'findByIdModel')
+        .resolves([]);
+
+      const prod = await productsService.remove(99);
+    
+      expect(prod.codeStatus).equal(productDBFailed.codeStatus);
+      expect(prod.data).deep.equal(productDBFailed.data);
+    });
+  });
 });

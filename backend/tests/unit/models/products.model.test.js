@@ -75,4 +75,19 @@ describe('Products Model', function () {
       sinon.restore();
     });
   });
+
+  describe('DELETE', function () {
+    it('Será validado que é possível deletar um produto com sucesso', async function () {
+      const conn = sinon.stub(connection, 'execute')
+        .resolves([{ insertId: 1 }]);
+      
+      await productsModel.removeModel(1);
+
+      expect(conn).have.calledWith();
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
 });

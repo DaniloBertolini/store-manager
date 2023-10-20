@@ -170,4 +170,30 @@ describe('Products Controller', function () {
       expect(res.status).calledWith(400);
     });
   });
+
+  describe('DELETE', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('Será validado que é possível deletar um produto com sucesso', async function () {
+      const req = {
+        params: {
+          id: 1,
+        },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        end: sinon.stub(),
+      };
+
+      sinon.stub(productsService, 'remove')
+        .resolves({ codeStatus: 'NO_CONTENT' });
+
+      await productsController.deleteProduct(req, res);
+
+      expect(res.status).calledWith(204);
+      expect(res.end).calledWith();
+    });
+  });
 });
