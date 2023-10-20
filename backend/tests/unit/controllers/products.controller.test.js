@@ -118,22 +118,5 @@ describe('Products Controller', function () {
       expect(next).not.to.have.been.calledWith();
       expect(res.status).calledWith(400);
     });
-
-    it('Será validado que não é possível cadastrar um produto com o campo "name" menor que 5 caracteres', async function () {
-      const next = sinon.stub().returns();
-      
-      const req = {
-        body: { name: 'Test' },
-      };
-      const res = {
-        status: sinon.stub().returnsThis(),
-        json: sinon.stub(),
-      };
-      
-      validateCreateProducts(req, res, next);
-      
-      expect(next).not.to.have.been.calledWith();
-      expect(res.status).calledWith(400);
-    });
   });
 });

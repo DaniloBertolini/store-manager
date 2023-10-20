@@ -8,4 +8,9 @@ module.exports = {
     FROM sales_products SP
     INNER JOIN sales S ON SP.sale_id = S.id
     WHERE SP.sale_id = ?`,
+  createSalesQuery: `
+    INSERT INTO sales VALUES ()`,
+  insertItemsQuery: `
+    INSERT INTO sales_products (sale_id, product_id, quantity)
+    VALUES (?, ?, ?)`,
 };

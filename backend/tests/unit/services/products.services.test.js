@@ -11,6 +11,7 @@ const {
 } = require('../mocks/products.mock');
 const { productsModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
+const { nameSchema } = require('../../../src/services/validations/schemas');
 
 const { expect } = chai;
 
@@ -64,6 +65,18 @@ describe('Products Service', function () {
       
       expect(prod.codeStatus).equal('CREATED');
       expect(prod.data).deep.equal(productCreated);
+    });
+
+    it('Será validado que não é possível cadastrar um produto com o campo "name" menor que 5 caracteres', async function () {      
+      const nameTest = 'name';
+
+      sinon.stub(nameSchema, 'validate').returns({ error: { message: '"name" length must be at least 5 characters long' } });
+
+      const productFailed = await productsService.create(nameTest);
+
+      expect(nameSchema.validate).to.have.been.calledWith(nameTest);
+      expect(productFailed.codeStatus).equal('INVALID_VALUE');
+      expect(productFailed.data.message).equal('"name" length must be at least 5 characters long');
     });
   });
 });

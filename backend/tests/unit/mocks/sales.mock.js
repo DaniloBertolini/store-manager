@@ -45,6 +45,27 @@ const allSalesDB = {
   data: allSales,
 };
 
+const saleCreate = [
+  {
+    productId: 1,
+    quantity: 1,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
+const saleCreatedReturn = {
+  id: 3,
+  itensSold: saleCreate,
+};
+
+const saleCreated = {
+  codeStatus: 'CREATED',
+  data: saleCreatedReturn,
+};
+
 const salesByIdDB = {
   codeStatus: 'SUCCESSFUL',
   data: salesById,
@@ -62,4 +83,7 @@ module.exports = {
   salesByIdDB,
   saleFailed,
   saleDBFailed,
+  saleCreate,
+  saleCreatedReturn,
+  saleCreated,
 };

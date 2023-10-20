@@ -13,7 +13,15 @@ const getSaleById = async (req, res) => {
   res.status(mapStatusHTTP(codeStatus)).json(data);
 };
 
+const createSale = async (req, res) => {
+  const { body } = req;
+  const { codeStatus, data } = await salesService.create(body);
+
+  res.status(mapStatusHTTP(codeStatus)).json(data);
+};
+
 module.exports = {
   getAllSales,
   getSaleById,
+  createSale,
 };
