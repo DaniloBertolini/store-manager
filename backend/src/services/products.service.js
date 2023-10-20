@@ -55,10 +55,16 @@ const remove = async (id) => {
   return { codeStatus: 'NO_CONTENT' };
 };
 
+const findByName = async (q) => {
+  const data = await productsModel.findByNameModel(q);
+  return { codeStatus: 'SUCCESSFUL', data };
+};
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
   remove,
+  findByName,
 };

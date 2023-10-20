@@ -4,4 +4,5 @@ module.exports = {
   createProductQuery: 'INSERT INTO products (name) VALUES (?)',
   updateProductQuery: 'UPDATE products SET name = ? WHERE id = ?',
   deleteProductQuery: 'DELETE FROM products WHERE id = ?',
+  findByNameProductQuery: 'SELECT * FROM products WHERE name LIKE ?',
 };

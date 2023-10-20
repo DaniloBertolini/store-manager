@@ -41,6 +41,33 @@ describe('Products Model', function () {
       expect(response).deep.equal(undefined);
     });
 
+    it('Será validado que é possível listar um produto pelo nome', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([product]);
+
+      const response = await productsModel.findByNameModel('Martelo');
+
+      expect(response).deep.equal(product);
+    });
+
+    it('Será validado que é possível buscar todos os produtos quando passa a busca vazia', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([allProducts]);
+
+      const response = await productsModel.findByNameModel('');
+
+      expect(response).deep.equal(allProducts);
+    });
+
+    it.only('Será validado que a busca retorna um array vazio quando não há produtos correspondentes', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([[]]);
+
+      const response = await productsModel.findByNameModel('Testando');
+
+      expect(response).deep.equal([]);
+    });
+
     afterEach(function () {
       sinon.restore();
     });

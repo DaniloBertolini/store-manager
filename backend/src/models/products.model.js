@@ -5,6 +5,7 @@ const {
   createProductQuery,
   updateProductQuery,
   deleteProductQuery,
+  findByNameProductQuery,
 } = require('./querys/productsQuery');
 
 const getAllModel = async () => {
@@ -33,10 +34,16 @@ const removeModel = async (id) => {
   await connection.execute(deleteProductQuery, [id]);
 };
 
+const findByNameModel = async (q) => {
+  const [product] = await connection.execute(findByNameProductQuery, [`%${q}%`]);
+  return product;
+};
+
 module.exports = {
   getAllModel,
   findByIdModel,
   createModel,
   updateModel,
   removeModel,
+  findByNameModel,
 };

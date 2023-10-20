@@ -50,6 +50,36 @@ describe('Products Service', function () {
       expect(prod.codeStatus).equal(productDBFailed.codeStatus);
       expect(prod.data).deep.equal(productDBFailed.data);
     });
+
+    it('Será validado que é possível listar um produto pelo nome', async function () {
+      sinon.stub(productsModel, 'findByNameModel')
+        .resolves(product);
+
+      const prod = await productsService.findByName('Martelo');
+      
+      expect(prod.codeStatus).equal(productDB.codeStatus);
+      expect(prod.data).deep.equal(productDB.data);
+    });
+
+    it('Será validado que é possível buscar todos os produtos quando passa a busca vazia', async function () {
+      sinon.stub(productsModel, 'findByNameModel')
+        .resolves(allProducts);
+
+      const prod = await productsService.findByName('');
+      
+      expect(prod.codeStatus).equal(allProductsDB.codeStatus);
+      expect(prod.data).deep.equal(allProductsDB.data);
+    });
+
+    it('Será validado que a busca retorna um array vazio quando não há produtos correspondentes', async function () {
+      sinon.stub(productsModel, 'findByNameModel')
+        .resolves([]);
+
+      const prod = await productsService.findByName('Martelo');
+      
+      expect(prod.codeStatus).equal('SUCCESSFUL');
+      expect(prod.data).deep.equal([]);
+    });
   
     afterEach(function () {
       sinon.restore();

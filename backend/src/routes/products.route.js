@@ -4,6 +4,8 @@ const validateCreateProducts = require('../middlewares/validateCreateProduct');
 
 route.get('/', productsController.getAllProducts);
 
+route.get('/search', productsController.getProductByName);
+
 route.get('/:id', productsController.getProductById);
 
 route.post('/', validateCreateProducts, productsController.createProduct);

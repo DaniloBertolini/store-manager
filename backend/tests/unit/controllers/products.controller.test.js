@@ -73,6 +73,57 @@ describe('Products Controller', function () {
       expect(res.json).calledWith(productFailed);
     });
 
+    it('Será validado que é possível listar um produto pelo nome', async function () {
+      const req = {
+        query: { q: 'Martelo' },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'findByName')
+        .resolves(productDB);
+
+      await productsController.getProductByName(req, res);
+
+      expect(res.status).calledWith(200);
+      expect(res.json).calledWith(product);
+    });
+
+    it('Será validado que é possível buscar todos os produtos quando passa a busca vazia', async function () {
+      const req = {
+        query: { q: '' },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'findByName')
+        .resolves(allProductsDB);
+
+      await productsController.getProductByName(req, res);
+
+      expect(res.status).calledWith(200);
+      expect(res.json).calledWith(allProducts);
+    });
+
+    it('Será validado que a busca retorna um array vazio quando não há produtos correspondentes', async function () {
+      const req = {
+        query: { q: 'Produto que não existe' },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      sinon.stub(productsService, 'findByName')
+        .resolves({ codeStatus: 'SUCCESSFUL', data: [] });
+
+      await productsController.getProductByName(req, res);
+
+      expect(res.status).calledWith(200);
+      expect(res.json).calledWith([]);
+    });
+
     afterEach(function () {
       sinon.restore();
     });
@@ -175,7 +226,6 @@ describe('Products Controller', function () {
     afterEach(function () {
       sinon.restore();
     });
-
     it('Será validado que é possível deletar um produto com sucesso', async function () {
       const req = {
         params: {
@@ -186,7 +236,6 @@ describe('Products Controller', function () {
         status: sinon.stub().returnsThis(),
         end: sinon.stub(),
       };
-
       sinon.stub(productsService, 'remove')
         .resolves({ codeStatus: 'NO_CONTENT' });
 
