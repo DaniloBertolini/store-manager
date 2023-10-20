@@ -93,4 +93,31 @@ describe('Sales Service', function () {
       expect(result.data).deep.equal(saleFailedProductIdMessage);
     });
   });
+
+  describe('DELETE', function () {
+    it('Será validado que é possível deletar uma venda com sucesso', async function () {
+      sinon.stub(salesModel, 'findByIdModel')
+        .resolves([salesById]);
+      sinon.stub(salesModel, 'removeModel')
+        .resolves();
+    
+      const sales = await salesService.remove(1);
+    
+      expect(sales.codeStatus).equal('NO_CONTENT');
+    });
+
+    it('Será validado que não é possível deletar uma venda que não existe', async function () {
+      sinon.stub(salesModel, 'findByIdModel')
+        .resolves([]);
+
+      const sales = await salesService.remove(99);
+
+      expect(sales.codeStatus).equal(saleDBFailed.codeStatus);
+      expect(sales.data).deep.equal(saleDBFailed.data);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
 });

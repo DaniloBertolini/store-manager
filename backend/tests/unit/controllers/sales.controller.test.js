@@ -172,4 +172,29 @@ describe('Sales Controller', function () {
       sinon.restore();
     });
   });
+  
+  describe('DELETE', function () {
+    it('Será validado que é possível deletar uma venda com sucesso', async function () {
+      const req = {
+        params: {
+          id: 1,
+        },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        end: sinon.stub(),
+      };
+      sinon.stub(salesService, 'remove')
+        .resolves({ codeStatus: 'NO_CONTENT' });
+      
+      await salesController.deleteSale(req, res);
+      
+      expect(res.status).calledWith(204);
+      expect(res.end).calledWith();
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
 });

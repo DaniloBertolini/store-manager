@@ -13,4 +13,5 @@ module.exports = {
   insertItemsQuery: `
     INSERT INTO sales_products (sale_id, product_id, quantity)
     VALUES (?, ?, ?)`,
+  deleteSalesQuery: ' DELETE FROM sales WHERE id = ?',
 };

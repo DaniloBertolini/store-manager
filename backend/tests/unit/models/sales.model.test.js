@@ -58,5 +58,24 @@ describe('Sales Model', function () {
 
       expect(response).deep.equal({ insertId });
     });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+  
+  describe('DELETE', function () {
+    it('Será validado que é possível deletar uma venda com sucesso', async function () {
+      const conn = sinon.stub(connection, 'execute')
+        .resolves();
+
+      await salesModel.removeModel(1);
+
+      expect(conn).have.calledWith();
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
   });
 });

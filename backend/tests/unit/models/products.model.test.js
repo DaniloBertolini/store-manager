@@ -79,7 +79,7 @@ describe('Products Model', function () {
   describe('DELETE', function () {
     it('Será validado que é possível deletar um produto com sucesso', async function () {
       const conn = sinon.stub(connection, 'execute')
-        .resolves([{ insertId: 1 }]);
+        .resolves();
       
       await productsModel.removeModel(1);
 

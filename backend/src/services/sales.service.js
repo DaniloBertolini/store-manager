@@ -31,8 +31,21 @@ const create = async (itemsSold) => {
   return { codeStatus: 'CREATED', data };
 };
 
+const remove = async (id) => {
+  const [data] = await salesModel.findByIdModel(id);
+  if (!data) {
+    return {
+      codeStatus: 'NOT_FOUND',
+      data: { message: 'Sale not found' },
+    };
+  }
+  await salesModel.removeModel(id);
+  return { codeStatus: 'NO_CONTENT' };
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  remove,
 };

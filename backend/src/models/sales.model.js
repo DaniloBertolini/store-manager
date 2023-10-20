@@ -4,6 +4,7 @@ const {
   findByIdSalesQuery,
   createSalesQuery,
   insertItemsQuery,
+  deleteSalesQuery,
 } = require('./querys/salesQuery');
 
 const getAllModel = async () => {
@@ -29,8 +30,13 @@ const createModel = async (itemsSold) => {
   return sales;
 };
 
+const removeModel = async (id) => {
+  await connection.execute(deleteSalesQuery, [id]);
+};
+
 module.exports = {
   getAllModel,
   findByIdModel,
   createModel,
+  removeModel,
 };
