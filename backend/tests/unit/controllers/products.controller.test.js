@@ -13,6 +13,7 @@ const {
 } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
+const validateCreateProducts = require('../../../src/middlewares/validateCreateProduct');
 
 const { expect } = chai;
 
@@ -21,7 +22,6 @@ chai.use(sinonChai);
 describe('Products Controller', function () {
   describe('GET', function () {
     it('Será validado que é possível listar todos os produtos', async function () {
-    // arr
       const req = {};
       const res = {
         status: sinon.stub().returnsThis(),
@@ -30,10 +30,8 @@ describe('Products Controller', function () {
       sinon.stub(productsService, 'getAll')
         .resolves(allProductsDB);
 
-      // act
       await productsController.getAllProducts(req, res);
 
-      // ass
       expect(res.status).calledWith(200);
       expect(res.json).calledWith(allProducts);
     });
@@ -80,7 +78,12 @@ describe('Products Controller', function () {
   });
 
   describe('POST', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
     it('Será validado que é possível cadastrar um produto com sucesso', async function () {
+      const next = sinon.stub().returns();
       const req = {
         body: { name: 'Teclado' },
       };
@@ -91,14 +94,46 @@ describe('Products Controller', function () {
       sinon.stub(productsService, 'create')
         .resolves(productDBCreated);
 
+      validateCreateProducts(req, res, next);
       await productsController.createProduct(req, res);
 
+      expect(next).to.have.been.calledWith();
       expect(res.status).calledWith(201);
       expect(res.json).calledWith(productCreated);
     });
+    
+    it('Será validado que não é possível cadastrar um produto sem o campo "name"', async function () {
+      const next = sinon.stub().returns();
+      
+      const req = {
+        body: { },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      
+      validateCreateProducts(req, res, next);
+      
+      expect(next).not.to.have.been.calledWith();
+      expect(res.status).calledWith(400);
+    });
 
-    afterEach(function () {
-      sinon.restore();
+    it('Será validado que não é possível cadastrar um produto com o campo "name" menor que 5 caracteres', async function () {
+      const next = sinon.stub().returns();
+      
+      const req = {
+        body: { name: 'Test' },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      
+      validateCreateProducts(req, res, next);
+      
+      expect(next).not.to.have.been.calledWith();
+      expect(res.status).calledWith(400);
     });
   });
 });

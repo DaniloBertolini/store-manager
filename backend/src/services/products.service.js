@@ -1,4 +1,5 @@
 const { productsModel } = require('../models');
+const { nameSchema } = require('./validations/schemas');
 
 const getAll = async () => {
   const data = await productsModel.getAllModel();
@@ -17,6 +18,8 @@ const findById = async (id) => {
 };
 
 const create = async (name) => {
+  const { error } = nameSchema.validate(name);
+  if (error) return { codeStatus: 'INVALID_VALUE', data: { message: error.message } };
   const productId = await productsModel.createModel(name);
 
   const [data] = await productsModel.findByIdModel(productId);
