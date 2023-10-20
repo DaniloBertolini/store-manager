@@ -10,6 +10,7 @@ const {
   productDBFailed,
   productCreated,
   productDBCreated,
+  productCreatedSuccessful,
 } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
@@ -102,6 +103,56 @@ describe('Products Controller', function () {
       expect(res.json).calledWith(productCreated);
     });
     
+    it('Será validado que não é possível cadastrar um produto sem o campo "name"', async function () {
+      const next = sinon.stub().returns();
+      
+      const req = {
+        body: { },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+      
+      validateCreateProducts(req, res, next);
+      
+      expect(next).not.to.have.been.calledWith();
+      expect(res.status).calledWith(400);
+    });
+  });
+
+  describe('PUT', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('Será validado que é possível atualizar um produto com sucesso', async function () {
+      const next = sinon.stub().returns();
+
+      const req = {
+        params: {
+          id: 4,
+        },
+        body: {
+          name: 'Teclado',
+        },
+      };
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      };
+
+      sinon.stub(productsService, 'update')
+        .resolves(productCreatedSuccessful);
+      
+      validateCreateProducts(req, res, next);
+      await productsController.updateProduct(req, res);
+
+      expect(next).to.have.been.calledWith();
+      expect(res.status).calledWith(200);
+      expect(res.json).calledWith(productCreated);
+    });
+
     it('Será validado que não é possível cadastrar um produto sem o campo "name"', async function () {
       const next = sinon.stub().returns();
       

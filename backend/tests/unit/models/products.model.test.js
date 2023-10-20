@@ -60,4 +60,19 @@ describe('Products Model', function () {
       sinon.restore();
     });
   });
+
+  describe('PUT', function () {
+    it('Será validado que é possível atualizar um produto com sucesso', async function () {
+      sinon.stub(connection, 'execute')
+        .resolves([{ insertId: 1 }]);
+      
+      const response = await productsModel.updateModel(1, 'Palito');
+
+      expect(response).deep.equal(1);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
 });

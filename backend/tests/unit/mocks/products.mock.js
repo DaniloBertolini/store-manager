@@ -18,6 +18,16 @@ const product = {
   name: 'Martelo de Thor',
 };
 
+const productUpdate = {
+  id: 1,
+  name: 'Lapis',
+};
+
+const productUpdateFailed = {
+  id: 99,
+  name: 'Lapis',
+};
+
 const productFailed = {
   message: 'Product not found',
 };
@@ -35,6 +45,11 @@ const productDB = {
 const productCreated = {
   id: 4,
   name: 'Teclado',
+};
+
+const productCreatedSuccessful = {
+  codeStatus: 'SUCCESSFUL',
+  data: productCreated,
 };
 
 const productDBCreated = {
@@ -56,4 +71,7 @@ module.exports = {
   productDBFailed,
   productCreated,
   productDBCreated,
+  productCreatedSuccessful,
+  productUpdate,
+  productUpdateFailed,
 };

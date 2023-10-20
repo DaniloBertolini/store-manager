@@ -3,6 +3,7 @@ const {
   getAllProductsQuery,
   findByIdProductQuery,
   createProductQuery,
+  updateProductQuery,
 } = require('./querys/productsQuery');
 
 const getAllModel = async () => {
@@ -21,8 +22,15 @@ const createModel = async (name) => {
   return product.insertId;
 };
 
+const updateModel = async (id, name) => {
+  const [product] = await connection.execute(updateProductQuery, [name, id]);
+
+  return product.insertId;
+};
+
 module.exports = {
   getAllModel,
   findByIdModel,
   createModel,
+  updateModel,
 };
