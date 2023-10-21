@@ -59,7 +59,7 @@ describe('Products Model', function () {
       expect(response).deep.equal(allProducts);
     });
 
-    it.only('Será validado que a busca retorna um array vazio quando não há produtos correspondentes', async function () {
+    it('Será validado que a busca retorna um array vazio quando não há produtos correspondentes', async function () {
       sinon.stub(connection, 'execute')
         .resolves([[]]);
 
